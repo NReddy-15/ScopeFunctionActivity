@@ -18,8 +18,11 @@ class MainActivity : AppCompatActivity() {
         // eg. Log.d("function output", getTestDataArray().toString())
 
         val countries = listOf(1.0, 4.0, 5.0, 10.0, 3.0)
+        val countries2 = listOf(1, 4, 5)
         Log.d("function output", getTestDataArray().toString())
         Log.d("function output", averageLessThanMedian(countries).toString())
+        getView(2, null, countries2, this)
+        Log.d("function output", "${getView(2, null, countries2, this)}")
     }
 
 
@@ -79,13 +82,11 @@ class MainActivity : AppCompatActivity() {
     }*/
 
     private fun getView(position: Int, recycledView: View?, collection: List<Int>, context: Context): View =
-        recycledView.let {
-            val textView : TextView
-            if (it != null) textView = recycledView as TextView else textView = TextView(context)
-            textView.setPadding(5, 10, 10, 0)
-            textView.textSize = 22f
-            textView.text = String.format(collection[position].toString())
-            textView
+        (recycledView as? TextView ?: TextView(context).apply {
+            setPadding(5, 10, 10, 0)
+            textSize = 22f
+        }).apply {
+            text = collection[position].toString()
         }
 
 
