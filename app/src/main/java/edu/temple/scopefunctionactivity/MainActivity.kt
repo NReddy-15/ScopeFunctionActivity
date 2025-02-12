@@ -17,6 +17,9 @@ class MainActivity : AppCompatActivity() {
         // printing their output to the Log, which is visible in the LogCat:
         // eg. Log.d("function output", getTestDataArray().toString())
 
+        val countries = listOf(1.0, 4.0, 5.0, 10.0, 3.0)
+        Log.d("function output", getTestDataArray().toString())
+        Log.d("function output", averageLessThanMedian(countries).toString())
     }
 
 
@@ -27,14 +30,16 @@ class MainActivity : AppCompatActivity() {
     // Look at the final/return value and build the function "working backwards"
 
     // Return a list of random, sorted integers
-    private fun getTestDataArray() : List<Int> {
+    /*private fun getTestDataArray() : List<Int> {
         val testArray = MutableList(10){ Random.nextInt()}
         testArray.sort()
         return testArray
-    }
+    }*/
+
+    private fun getTestDataArray() : List<Int> = MutableList(10){Random.nextInt()}.apply { sort() }
 
     // Return true if average value in list is greater than median value, false otherwise
-    private fun averageLessThanMedian(listOfNumbers: List<Double>): Boolean {
+    /*private fun averageLessThanMedian(listOfNumbers: List<Double>): Boolean {
         val avg = listOfNumbers.average()
         val sortedList = listOfNumbers.sorted()
         val median = if (sortedList.size % 2 == 0)
@@ -43,10 +48,21 @@ class MainActivity : AppCompatActivity() {
             sortedList[sortedList.size / 2]
 
         return avg < median
-    }
+    }*/
+
+    private fun averageLessThanMedian(listOfNumbers: List<Double>): Boolean =
+       listOfNumbers.let {
+           val avg = it.average()
+           val sortedList = it.sorted()
+           val median = if (sortedList.size % 2 == 0)
+               (sortedList[sortedList.size / 2] + sortedList[(sortedList.size - 1) / 2]) / 2
+           else
+               sortedList[sortedList.size / 2]
+           avg < median
+       }
 
     // Create a view from an item in a collection, but recycle if possible (similar to an AdapterView's adapter)
-    private fun getView(position: Int, recycledView: View?, collection: List<Int>, context: Context): View {
+    /*private fun getView(position: Int, recycledView: View?, collection: List<Int>, context: Context): View {
         val textView: TextView
 
         if (recycledView != null) {
@@ -60,6 +76,17 @@ class MainActivity : AppCompatActivity() {
         textView.text = collection[position].toString()
 
         return textView
-    }
+    }*/
+
+    private fun getView(position: Int, recycledView: View?, collection: List<Int>, context: Context): View =
+        recycledView.let {
+            val textView : TextView
+            if (it != null) textView = recycledView as TextView else textView = TextView(context)
+            textView.setPadding(5, 10, 10, 0)
+            textView.textSize = 22f
+            textView.text = String.format(collection[position].toString())
+            textView
+        }
+
 
 }
